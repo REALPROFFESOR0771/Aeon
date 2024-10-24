@@ -248,10 +248,11 @@ def source(self):
 
 
 def get_readable_message():
-    msg = "<b>Powered by Aeon</b>\n\n"
+    msg = f'<a href="https://t.me/Max_Leech_Zone_V5"><b>☬ᴍᴀx ʟᴇᴇᴄʜ ᴢᴏɴᴇ ɢʀᴏᴜᴘ☬</b></a>'
+    msg += f'\n\n'
     button = None
     tasks = len(download_dict)
-    current_time = get_readable_time(time() - bot_start_time)
+    currentTime = get_readable_time(time() - botStartTime)
     if config_dict["BOT_MAX_TASKS"]:
         bmax_task = f"/{config_dict['BOT_MAX_TASKS']}"
     else:
@@ -262,31 +263,32 @@ def get_readable_message():
         globals()["PAGE_NO"] = PAGES
     for download in list(download_dict.values())[
         STATUS_START : STATUS_LIMIT + STATUS_START
-    ]:
-        msg += f"<b>{download.status()}:</b> {escape(f'{download.name()}')}\n"
-        msg += f"by {source(download)}\n"
+     ]:
+        msg += f"<b>{download.status()} :</b> {escape(f'{download.name()}')}\n"
+        msg += f"<b>👤 Name :</b> {source(download)}\n"
         if download.status() not in [
             MirrorStatus.STATUS_SPLITTING,
             MirrorStatus.STATUS_SEEDING,
             MirrorStatus.STATUS_PROCESSING,
         ]:
-            msg += f"<blockquote><code>{progress_bar(download.progress())}</code> {download.progress()}"
-            msg += f"\n{download.processed_bytes()} of {download.size()}"
-            msg += f"\nSpeed: {download.speed()}"
-            msg += f"\nEstimated: {download.eta()}"
+            msg += f"\n<blockquote>🎡  <b>[{progress_bar(download.progress())}]</b> <b>{download.progress()}"
+            msg += f"\n🔄 <b><code>Status   :</code> {download.processed_bytes()} of {download.size()}</b>"
+            msg += f"\n⚡ <b><code>Speed    :</code> {download.speed()}</b>"
+            msg += f'\n💣 <b><code>Estimated:</code> {download.eta()}</b>'
             if hasattr(download, "seeders_num"):
                 with contextlib.suppress(Exception):
-                    msg += f"\nSeeders: {download.seeders_num()} | Leechers: {download.leechers_num()}"
+                    msg += f"\n🧑🏻 <code>Seeders  :</code> {download.seeders_num()}" 
+                    msg += f"\n🐌 <code>Leechers :</code> {download.leechers_num()}"
         elif download.status() == MirrorStatus.STATUS_SEEDING:
-            msg += f"<blockquote>Size: {download.size()}"
-            msg += f"\nSpeed: {download.upload_speed()}"
-            msg += f"\nUploaded: {download.uploaded_bytes()}"
-            msg += f"\nRatio: {download.ratio()}"
-            msg += f"\nTime: {download.seeding_time()}"
+            msg += f"\n📐 <code>Size   :</code> {download.size()}"
+            msg += f"\n⚡ <code>Speed    :</code> {download.upload_speed()}"
+            msg += f"\n🔺 <code>Uploaded :</code> {download.uploaded_bytes()}"
+            msg += f"\n🌡 <code>Ratio    :</code> {download.ratio()}"
+            msg += f"\n⌚ <code>Time     :</code> {download.seeding_time()}"
         else:
-            msg += f"<blockquote>Size: {download.size()}"
-        msg += f"\nElapsed: {get_readable_time(time() - download.message.date.timestamp())}</blockquote>"
-        msg += f"\n<blockquote>/stop_{download.gid()[:8]}</blockquote>\n\n"
+            msg += f"\n📐 <code>Size     :</code> {download.size()}"
+        msg += f"\n⏱ <code>Elapsed  :</code> {get_readable_time(time() - download.message.date.timestamp())}</blockquote>"
+        msg += f"\n<blockquote>❌  /stop_{download.gid()[:8]}</blockquote>\n\n"
     if len(msg) == 0:
         return None, None
     if tasks > STATUS_LIMIT:
@@ -295,11 +297,10 @@ def get_readable_message():
         buttons.callback(f"{PAGE_NO}/{PAGES}", "status ref")
         buttons.callback("Next", "status nex")
         button = buttons.column(3)
-    msg += f"<b>• Tasks</b>: {tasks}{bmax_task}"
-    msg += f"\n<b>• Bot uptime</b>: {current_time}"
-    msg += f"\n<b>• Free disk space</b>: {get_readable_file_size(disk_usage('/usr/src/app/downloads/').free)}"
+    msg += f"<blockquote><b>🧮 Tasks</b> : {tasks}{bmax_task}"
+    msg += f"\n<b>🕛 <code>Bot Uptime</b>     :</code> {currentTime}"
+    msg += f"\n<b>🆓 <code>Free Disk Space</b>:</code> {get_readable_file_size(disk_usage('/usr/src/app/downloads/').free)}</blockquote>"
     return msg, button
-
 
 def text_to_bytes(size_text):
     size_text = size_text.lower()

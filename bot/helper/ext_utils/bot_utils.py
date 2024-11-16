@@ -31,7 +31,6 @@ from bot import (
     config_dict,
     download_dict,
     extra_buttons,
-    bot_start_time,
     download_dict_lock,
 )
 from bot.helper.aeon_utils.tinyfy import tinyfy
@@ -248,8 +247,10 @@ def source(self):
 
 
 def get_readable_message():
-    msg = f'<a href="https://t.me/Max_Leech_Zone_V5"><b>☬ᴍᴀx ʟᴇᴇᴄʜ ᴢᴏɴᴇ ɢʀᴏᴜᴘ☬</b></a>'
-    msg += f'\n\n'
+    msg = (
+        '<a href="https://t.me/Max_Leech_Zone_V5"><b>☬ᴍᴀx ʟᴇᴇᴄʜ ᴢᴏɴᴇ ɢʀᴏᴜᴘ☬</b></a>'
+    )
+    msg += "\n\n"
     button = None
     tasks = len(download_dict)
     currentTime = get_readable_time(time() - botStartTime)
@@ -263,7 +264,7 @@ def get_readable_message():
         globals()["PAGE_NO"] = PAGES
     for download in list(download_dict.values())[
         STATUS_START : STATUS_LIMIT + STATUS_START
-     ]:
+    ]:
         msg += f"<b>{download.status()} :</b> {escape(f'{download.name()}')}\n"
         msg += f"<b>👤 Name :</b> {source(download)}\n"
         if download.status() not in [
@@ -274,10 +275,10 @@ def get_readable_message():
             msg += f"\n<blockquote>🎡  <b>[{progress_bar(download.progress())}]</b> <b>{download.progress()}"
             msg += f"\n🔄 <b><code>Status   :</code> {download.processed_bytes()} of {download.size()}</b>"
             msg += f"\n⚡ <b><code>Speed    :</code> {download.speed()}</b>"
-            msg += f'\n💣 <b><code>Estimated:</code> {download.eta()}</b>'
+            msg += f"\n💣 <b><code>Estimated:</code> {download.eta()}</b>"
             if hasattr(download, "seeders_num"):
                 with contextlib.suppress(Exception):
-                    msg += f"\n🧑🏻 <code>Seeders  :</code> {download.seeders_num()}" 
+                    msg += f"\n🧑🏻 <code>Seeders  :</code> {download.seeders_num()}"
                     msg += f"\n🐌 <code>Leechers :</code> {download.leechers_num()}"
         elif download.status() == MirrorStatus.STATUS_SEEDING:
             msg += f"\n📐 <code>Size   :</code> {download.size()}"
@@ -301,6 +302,7 @@ def get_readable_message():
     msg += f"\n<b>🕛 <code>Bot Uptime</b>     :</code> {currentTime}"
     msg += f"\n<b>🆓 <code>Free Disk Space</b>:</code> {get_readable_file_size(disk_usage('/usr/src/app/downloads/').free)}</blockquote>"
     return msg, button
+
 
 def text_to_bytes(size_text):
     size_text = size_text.lower()
